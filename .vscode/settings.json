@@ -20,5 +20,8 @@
 	"js/ts.experimental.useTsgo": false,
 	"js/ts.preferences.importModuleSpecifier": "shortest",
 	"js/ts.tsserver.maxMemory": 4096,
-	"js/ts.hover.maximumLength": 50000
+	"js/ts.hover.maximumLength": 50000,
+	"cSpell.words": [
+		"vitest"
+	]
 }

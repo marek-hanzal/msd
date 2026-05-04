@@ -18,6 +18,42 @@
 				"showReuseMessage": true,
 				"clear": true
 			}
+		},
+		{
+			"type": "shell",
+			"command": "bun run lint",
+			"problemMatcher": [],
+			"label": "lint",
+			"detail": "Lint is important, you know?",
+			"runOptions": {
+				"instanceLimit": 1
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": true
+			}
+		},
+		{
+			"type": "shell",
+			"command": "bun run typecheck",
+			"problemMatcher": [],
+			"label": "typecheck",
+			"detail": "Run typecheck",
+			"runOptions": {
+				"instanceLimit": 1
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": true
+			}
 		}
 	]
 }
