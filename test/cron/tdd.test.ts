@@ -234,19 +234,35 @@ describe("default test", () => {
 	});
 
 	it("simple next", () => {
-		const next = nextOccurrence(parse("* * * * *"), new Date("2026-01-01T00:00:00").getTime());
+		const next = nextOccurrence(
+			parse("* * * * *"),
+			new Date("2026-01-01T00:00:00Z").getTime() / 1000,
+		);
 
-		expect(next).toBe(new Date("2026-01-01T00:01:00").getTime());
+		expect(new Date(next * 1000).toISOString()).toBe("2026-01-01T00:01:00.000Z");
 	});
 
 	it("range next", () => {
 		const next = nextOccurrence(
 			parse("2-12/8 3-4 3-5 4,5 *"),
-			new Date("2026-01-01T05:40:59").getTime() / 1000,
+			new Date("2026-01-01T05:40:59Z").getTime() / 1000,
 		);
 
-		console.log("Stamp", new Date(next * 1000).toUTCString());
+		/**
+		 * So, we've:
+		 * - allowed only 4 and 5 months (closest is 4)
+		 * - allowed 3 and 4 hours, closest is 3
+		 * - allowed range 2-12 minutes, step by 8, which is 2 (first valid value)
+		 */
+		expect(new Date(next * 1000).toISOString()).toBe("2026-04-03T03:02:00.000Z");
+	});
 
-		expect(next).toBe(new Date("2026-01-01T00:05:00").getTime() / 1000);
+	it("range next next", () => {
+		const next = nextOccurrence(
+			parse("*/5 6 * * 5"),
+			new Date("2026-01-01T05:40:59Z").getTime() / 1000,
+		);
+
+		expect(new Date(next * 1000).toISOString()).toBe("2026-01-02T06:00:00.000Z");
 	});
 });
