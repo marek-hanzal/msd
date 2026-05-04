@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { parse } from "~/cron";
 import { InvalidRowError } from "~/cron/error/InvalidRowError";
+import { nextOccurrence } from "~/cron/nextOccurrence";
 import { part } from "~/cron/part";
 import type { CronItemSchema } from "~/cron/schema/CronItemSchema";
 import type { CronValueSchema } from "~/cron/schema/CronValueSchema";
@@ -230,5 +231,20 @@ describe("default test", () => {
 				max: 2,
 			},
 		} satisfies CronItemSchema.Type);
+	});
+
+	it("simple next", () => {
+		const next = nextOccurrence(parse("* * * * *"), new Date("2026-01-01T00:00:00").getTime());
+
+		expect(next).toBe(new Date("2026-01-01T00:01:00").getTime());
+	});
+
+	it("range next", () => {
+		const next = nextOccurrence(
+			parse("3-13/5 */4 * * *"),
+			new Date("2026-01-01T00:04:59").getTime(),
+		);
+
+		expect(next).toBe(new Date("2026-01-01T00:05:00").getTime());
 	});
 });

@@ -22,6 +22,8 @@
 	"js/ts.tsserver.maxMemory": 4096,
 	"js/ts.hover.maximumLength": 50000,
 	"cSpell.words": [
+		"luxon",
+		"Millis",
 		"usecase",
 		"vitest",
 		"yaaay"

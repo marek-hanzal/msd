@@ -8,6 +8,7 @@ The Cron's Quest
 - typescript - ou yaaay!
 - ts-pattern - incredibly powerful library for pattern matching, useful with discriminated unions and dynamic values (as we've here)
 - zod - Scheme or not Schema, that's the Question with obvious answer
+- luxon - we're heavy on time operations and this lib has pretty nice API to work with (aaaand I'm used to it)
 
 # The implementation
 
