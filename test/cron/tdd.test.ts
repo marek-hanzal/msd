@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { parse } from "~/cron";
 import { InvalidRowError } from "~/cron/error/InvalidRowError";
 import { part } from "~/cron/part";
+import type { CronItemSchema } from "~/cron/schema/CronItemSchema";
 import type { CronValueSchema } from "~/cron/schema/CronValueSchema";
 
 describe("default test", () => {
@@ -72,7 +73,78 @@ describe("default test", () => {
 		} satisfies CronValueSchema.Type);
 	});
 
-	it("should properly parse the stuff", () => {
-		expect(true).toBe(true);
+	it("wild-wild-west", () => {
+		const result = parse("* * * * *");
+
+		expect(result).toMatchObject({
+			minute: {
+				type: "wildcard",
+			},
+			hour: {
+				type: "wildcard",
+			},
+			dayOfMonth: {
+				type: "wildcard",
+			},
+			dayOfWeek: {
+				type: "wildcard",
+			},
+			month: {
+				type: "wildcard",
+			},
+		} satisfies CronItemSchema.Type);
+	});
+
+	it("literal hour", () => {
+		const result = parse("* 23 * * *");
+
+		expect(result).toMatchObject({
+			minute: {
+				type: "wildcard",
+			},
+			hour: {
+				type: "literal",
+				value: 23,
+			},
+			dayOfMonth: {
+				type: "wildcard",
+			},
+			dayOfWeek: {
+				type: "wildcard",
+			},
+			month: {
+				type: "wildcard",
+			},
+		} satisfies CronItemSchema.Type);
+	});
+
+	it("literal hour + dow range-step", () => {
+		const result = parse("* 23 * * 1-3/12");
+
+		expect(result).toMatchObject({
+			minute: {
+				type: "wildcard",
+			},
+			hour: {
+				type: "literal",
+				value: 23,
+			},
+			dayOfMonth: {
+				type: "wildcard",
+			},
+			dayOfWeek: {
+				type: "range-step",
+				min: 1,
+				max: 3,
+				step: 12,
+			},
+			month: {
+				type: "wildcard",
+			},
+		} satisfies CronItemSchema.Type);
+	});
+
+	it("range-step kaboom", () => {
+		expect(() => parse("* 23 * * a/12")).toThrow("Cannot swallow given expression [a/12]");
 	});
 });

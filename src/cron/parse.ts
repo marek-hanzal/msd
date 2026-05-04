@@ -3,7 +3,7 @@ import { part } from "./part";
 import type { CronItemSchema } from "./schema/CronItemSchema";
 
 export const parse = (expression: string): CronItemSchema.Type => {
-	const parts = expression.split(/s+/gu) as [
+	const parts = expression.trim().split(/\s+/u) as [
 		string,
 		string,
 		string,
@@ -12,7 +12,7 @@ export const parse = (expression: string): CronItemSchema.Type => {
 	];
 
 	if (parts.length < 5) {
-		throw new InvalidRowError("Missing parts");
+		throw new InvalidRowError(`Missing parts (we've [${parts.length}])`);
 	}
 
 	const minute = part(parts[0]);
