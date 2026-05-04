@@ -1,0 +1,27 @@
+{
+	"name": "@marek-hanzal/msd",
+	"description": "The Cron's Quest",
+	"version": "0.5.0",
+	"type": "module",
+	"sideEffects": false,
+	"private": true,
+	"scripts": {
+		"test": "vitest run"
+	},
+	"dependencies": {
+		"zod": "4.4.3"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.4.14",
+		"typescript": "6.0.3",
+		"vitest": "4.1.5",
+		"@types/node": "25.6.0"
+	},
+	"files": [
+		"src"
+	],
+	"license": "MIT",
+	"repository": "marek-hanzal/msd",
+	"homepage": "https://github.com/marek-hanzal/msd#readme",
+	"packageManager": "bun@1.3.0"
+}

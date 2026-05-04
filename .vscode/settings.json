@@ -1,0 +1,24 @@
+{
+	"editor.codeActionsOnSave": {
+		"source.organizeImports.biome": "always",
+		"source.fixAll.biome": "explicit",
+		"source.removeUnusedImports": "always"
+	},
+	"editor.defaultFormatter": "biomejs.biome",
+	"files.trimFinalNewlines": true,
+	"editor.formatOnSave": true,
+	"biome.requireConfiguration": true,
+	"[yaml]": {
+		"editor.defaultFormatter": "redhat.vscode-yaml"
+	},
+	"[toml]": {
+		"editor.defaultFormatter": "tamasfe.even-better-toml"
+	},
+	"[mdx]": {
+		"editor.defaultFormatter": "unifiedjs.vscode-mdx"
+	},
+	"js/ts.experimental.useTsgo": false,
+	"js/ts.preferences.importModuleSpecifier": "shortest",
+	"js/ts.tsserver.maxMemory": 4096,
+	"js/ts.hover.maximumLength": 50000
+}
