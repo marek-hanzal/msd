@@ -76,21 +76,53 @@ const allowedValues = (item: CronValueSchema.Type, min: number, max: number) => 
 		.exhaustive();
 };
 
+const next = (
+	values: number[],
+	current: number,
+	zero: number = 0,
+): {
+	value: number;
+	overflow: boolean;
+} => {
+	for (const value of values) {
+		if (value >= current) {
+			return {
+				value,
+				overflow: false,
+			};
+		}
+	}
+
+	return {
+		value: values[0] ?? zero,
+		overflow: true,
+	};
+};
+
 export const nextOccurrence = (item: CronItemSchema.Type, referenceTimestamp: number) => {
 	const cursor = DateTime.fromMillis(referenceTimestamp, {
 		zone: "utc",
 	});
 
 	const minutes = allowedValues(item.minute, 0, 59);
+	const nextMinute = next(minutes, cursor.minute);
+	//
 	const hours = allowedValues(item.hour, 0, 23);
+	const nextHour = next(hours, cursor.hour + (nextMinute.overflow ? 1 : 0));
+	//
 	const months = allowedValues(item.month, 1, 12);
+	const nextMonth = next(months, cursor.month + (nextHour.overflow ? 1 : 0));
+	//
 	const daysOfMonth = allowedValues(item.dayOfMonth, 1, 31);
 	const daysOfWeek = allowedValues(item.dayOfWeek, 0, 6);
 
 	console.log("allowed minutes", {
 		minutes,
+		nextMinute,
 		hours,
+		nextHour,
 		months,
+		nextMonth,
 		daysOfMonth,
 		daysOfWeek,
 	});

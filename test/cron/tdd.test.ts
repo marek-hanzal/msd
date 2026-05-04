@@ -242,7 +242,7 @@ describe("default test", () => {
 	it("range next", () => {
 		const next = nextOccurrence(
 			parse("3-13/5 */4 * * *"),
-			new Date("2026-01-01T00:04:59").getTime(),
+			new Date("2026-01-01T00:14:59").getTime(),
 		);
 
 		expect(next).toBe(new Date("2026-01-01T00:05:00").getTime());
