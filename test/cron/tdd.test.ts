@@ -265,4 +265,58 @@ describe("default test", () => {
 
 		expect(new Date(next * 1000).toISOString()).toBe("2026-01-02T06:00:00.000Z");
 	});
+
+	it("seconds before boundary", () => {
+		const next = nextOccurrence(
+			parse("*/20 * * * *"),
+			new Date("2026-01-01T00:19:59Z").getTime() / 1000,
+		);
+
+		expect(new Date(next * 1000).toISOString()).toBe("2026-01-01T00:20:00.000Z");
+	});
+
+	it("exact match is exclusive", () => {
+		const next = nextOccurrence(
+			parse("*/20 * * * *"),
+			new Date("2026-01-01T00:20:00Z").getTime() / 1000,
+		);
+
+		expect(new Date(next * 1000).toISOString()).toBe("2026-01-01T00:40:00.000Z");
+	});
+
+	it("minute overflow jumps to next allowed hour", () => {
+		const next = nextOccurrence(
+			parse("0,10 2,5 * * *"),
+			new Date("2026-01-01T02:10:00Z").getTime() / 1000,
+		);
+
+		expect(new Date(next * 1000).toISOString()).toBe("2026-01-01T05:00:00.000Z");
+	});
+
+	it("skips invalid day of month in month range", () => {
+		const next = nextOccurrence(
+			parse("0 9 31 4-6 *"),
+			new Date("2026-04-01T00:00:00Z").getTime() / 1000,
+		);
+
+		expect(new Date(next * 1000).toISOString()).toBe("2026-05-31T09:00:00.000Z");
+	});
+
+	it("finds leap day", () => {
+		const next = nextOccurrence(
+			parse("0 0 29 2 *"),
+			new Date("2026-01-01T00:00:00Z").getTime() / 1000,
+		);
+
+		expect(new Date(next * 1000).toISOString()).toBe("2028-02-29T00:00:00.000Z");
+	});
+
+	it("uses AND semantics for day of month and day of week", () => {
+		const next = nextOccurrence(
+			parse("0 9 1 * 1"),
+			new Date("2026-01-01T00:00:00Z").getTime() / 1000,
+		);
+
+		expect(new Date(next * 1000).toISOString()).toBe("2026-06-01T09:00:00.000Z");
+	});
 });
