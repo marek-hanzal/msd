@@ -241,10 +241,12 @@ describe("default test", () => {
 
 	it("range next", () => {
 		const next = nextOccurrence(
-			parse("3-13/5 */4 * * *"),
-			new Date("2026-01-01T00:14:59").getTime(),
+			parse("2-12/8 3-4 3-5 4,5 *"),
+			new Date("2026-01-01T05:40:59").getTime() / 1000,
 		);
 
-		expect(next).toBe(new Date("2026-01-01T00:05:00").getTime());
+		console.log("Stamp", new Date(next * 1000).toUTCString());
+
+		expect(next).toBe(new Date("2026-01-01T00:05:00").getTime() / 1000);
 	});
 });
