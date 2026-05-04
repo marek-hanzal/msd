@@ -118,8 +118,34 @@ describe("default test", () => {
 		} satisfies CronItemSchema.Type);
 	});
 
+	it("list hour", () => {
+		const result = parse("* 2,3 * * *");
+
+		expect(result).toMatchObject({
+			minute: {
+				type: "wildcard",
+			},
+			hour: {
+				type: "list",
+				values: [
+					2,
+					3,
+				],
+			},
+			dayOfMonth: {
+				type: "wildcard",
+			},
+			dayOfWeek: {
+				type: "wildcard",
+			},
+			month: {
+				type: "wildcard",
+			},
+		} satisfies CronItemSchema.Type);
+	});
+
 	it("literal hour + dow range-step", () => {
-		const result = parse("* 23 * * 1-3/12");
+		const result = parse("* 23 * * 1-3/3");
 
 		expect(result).toMatchObject({
 			minute: {
@@ -136,7 +162,7 @@ describe("default test", () => {
 				type: "range-step",
 				min: 1,
 				max: 3,
-				step: 12,
+				step: 3,
 			},
 			month: {
 				type: "wildcard",
@@ -146,5 +172,63 @@ describe("default test", () => {
 
 	it("range-step kaboom", () => {
 		expect(() => parse("* 23 * * a/12")).toThrow("Cannot swallow given expression [a/12]");
+	});
+
+	it("invalid minute kaboom", () => {
+		expect(() => parse("123 * * * *")).toThrow("Invalid minute value [123]");
+	});
+
+	it("invalid step minute kaboom", () => {
+		expect(() => parse("*/123 * * * *")).toThrow("Invalid minute value [123]");
+	});
+
+	it("invalid hour kaboom", () => {
+		expect(() => parse("* 24 * * *")).toThrow("Invalid hour value [24]");
+	});
+
+	it("invalid list day-of-week kaboom", () => {
+		expect(() => parse("* * * * 1,52,6")).toThrow("Invalid day-of-week value [52]");
+	});
+
+	it("invalid list day-of-month kaboom", () => {
+		expect(() => parse("* * * 1-5/53 *")).toThrow("Invalid month value [53]");
+	});
+
+	it("hour min/max kaboom", () => {
+		expect(() => parse("* 12-8 * * *")).toThrow("Min [12] is higher than max [8]");
+	});
+
+	it("godzilla test", () => {
+		const result = parse("12 4,8,12 1-6 */12 0-2/3");
+
+		expect(result).toMatchObject({
+			minute: {
+				type: "literal",
+				value: 12,
+			},
+			hour: {
+				type: "list",
+				values: [
+					4,
+					8,
+					12,
+				],
+			},
+			dayOfMonth: {
+				type: "range",
+				min: 1,
+				max: 6,
+			},
+			month: {
+				type: "step",
+				step: 12,
+			},
+			dayOfWeek: {
+				type: "range-step",
+				step: 3,
+				min: 0,
+				max: 2,
+			},
+		} satisfies CronItemSchema.Type);
 	});
 });

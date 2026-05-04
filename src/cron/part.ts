@@ -8,6 +8,11 @@ const RangeStep = /^(?<min>[0-9]+)-(?<max>[0-9]+)\/(?<step>[0-9]+)$/u;
 const Step = /^\*\/(?<step>[0-9]+)$/u;
 const List = /^[0-9]+(?:,[0-9]+)+$/u;
 
+/**
+ * Part does not hold business logic of knowing semantic value, it just does it's job
+ * parsing (understanding) it's value; it's responsibility of different layer to check
+ * if the value is actually valid.
+ */
 export const part = (expression: string): CronValueSchema.Type => {
 	return match(expression)
 		.when(
