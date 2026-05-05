@@ -1,5 +1,4 @@
-# msd
-The Cron's Quest
+# The Cron's Quest
 
 ## Packages
 
